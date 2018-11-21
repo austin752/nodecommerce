@@ -1,0 +1,25 @@
+extends ../layouts/base.pug
+
+block content
+    main
+                h3 Registration
+                if errMsg
+                    .user-message.user-message--error #{errMsg}
+                
+                if validationErrors.find(e => e.param === 'email')
+                    -var emailErr = true
+                if validationErrors.find(e => e.param === 'password')
+                    -var passErr = true
+                if validationErrors.find(e => e.param === 'confirmPassword')
+                    -var confErr = true
+                form.registration-form(action="/registration", method="POST" novalidate)
+                    input(type="hidden", name="_csrf", value=csrfToken)
+                    .form-control
+                        input#email.form-control.my-3(class=emailErr ? 'invalid' : '', type="text",name="email", placeholder="E-mail", required="true", value=oldInput.email)
+                    .form-control
+                        input#password.form-control.my-3(class=passErr ? 'invalid' : '', type="password", name="password", placeholder="Password", required="true", value=oldInput.password)
+                    .form-control
+                        input#passwordConf.form-control.my-3(class=confErr ? 'invalid' : '', type="password", name="passwordConf", placeholder="Confirm Password", required="true" value="")
+                    button.btn.btn-success(type="submit", value="submit") Submit
+                p.my-3
+                    a(href="#") By clicking register, I agree to your terms

@@ -1,0 +1,39 @@
+extends ../layouts/base.pug
+
+block styles
+    link(rel="stylesheet", href="../css/product.css")
+
+block content
+    main
+        if product.length <= 0
+            h1 No Products
+        else
+            .grid
+                each p in product
+                    article.card.product-item
+                        header.card__header
+                            h1.product__title #{p.title}
+                        .card__image
+                            -var image = p.image
+                            -var title = p.title
+                            mixin image(name, caption)
+                                figure
+                                    img(src='/'+ image, alt=title)
+                                    figcaption= caption
+                            +image(image, title)
+
+                        .card__content
+                            h2.product__price $#{p.price.toFixed(2)}
+                            p.product__description #{p.desc}
+                    
+                        .card__actions
+                            a(href="/admin/edit-product/" + p._id + '?edit=true')
+                                button.btn(type="submit") Edit Product
+
+                            input(type="hidden", name="_csrf", value=csrfToken)
+                            input(type="hidden" name="prodId" value=p._id)
+                            input(type="hidden" name="userId" value=p.userId)
+                            button.btn(onclick="deleteProduct(this)") Delete Product
+            include ../layouts/pagination.pug
+block scripts
+    script(src="/js/admin.js")

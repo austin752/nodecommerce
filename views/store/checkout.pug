@@ -1,0 +1,50 @@
+extends ../layouts/base.pug
+
+block styles
+    link(rel="stylesheet", href="/css/cart.css")
+
+block content
+    main
+        if products.length <= 0
+            h1 No Products
+        else
+            each p in products
+                .row.cartItem
+                    .col-2                                
+                        -var image = p.productId.image
+                        -var title = p.productId.title
+                        mixin image(image, title)
+                            figure
+                                img.cartImage(src=image, alt= title)
+                        +image(image, title)
+                    .col-3
+                        h3.product__title #{p.productId.title}
+                    .col-2
+                        h2.product__price $#{p.productId.price}
+                    .col-2
+                        p.product__qty #{p.productId.desc}
+                    .col-1
+                        p.product__qty #{p.qty}
+                    .col-1
+                        p.product__total $#{p.total}
+            .row
+                .col-3
+                    h2 Total: $#{totalSum.toFixed(2)}
+            .row
+                .col-6.centered
+                    form(action="/create-order", method="POST")
+                        script(src="https://checkout.stripe.com/checkout.js", class="stripe-button", data-key="pk_test_KiycWb5iEzWvmKlLY0aesms9", data-amount="#{totalSum} * 100", data-name="Order from My Site", data-description="The items you ordered", data-image="https://stripe.com/img/documentation/checkout/marketplace.png", data-locale="auto", data-currency="usd")
+
+
+
+
+            //- ul.cart__item-list
+            //-     each p in products
+            //-         li.cart__item
+            //-             h1 #{p.productId.title}
+            //-             h2 Quantity: #{p.quantity}
+            //- .centered
+            //-     h2 Total: #{total}
+            //- form(action="/create-order/", method="POST")
+            //-         input(type="hidden", name="_csrf", value=csrfToken)
+            //-         button.btn(type="submit") Confirm Order   

@@ -1,0 +1,11 @@
+extends ../layouts/base.pug
+
+block content
+    main
+        if product.length <= 0
+            h1 No Products
+        else
+            .grid
+                each p in product
+                    include ../layouts/product-card.pug
+            include ../layouts/pagination.pug

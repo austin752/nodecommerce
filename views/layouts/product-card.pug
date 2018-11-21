@@ -1,0 +1,24 @@
+article.card.product-item
+    header.card__header
+        h1.product__title #{p.title}
+    .card__image
+        -var image = p.image
+        -var title = p.title
+        mixin image(name, caption)
+            figure
+                img(src='/' + name)
+                figcaption= caption
+        +image(image, title)
+
+    .card__content
+        h2.product__price #{p.price.toFixed(2)}
+        p.product__description #{p.desc}
+
+    .card__actions
+        a(href="/products/" + p._id)
+            button.btn Details
+        if isAuthenticated
+            form(action="/add-to-cart/", method="POST")
+                input(type="hidden", name="_csrf", value=csrfToken)
+                input(type="hidden" name="prodId" value=p._id)
+                button.btn(type="submit") Add to Cart

@@ -1,0 +1,28 @@
+extends ../layouts/base.pug
+
+block content
+    block styles
+        link(rel="stylesheet", href="/css/product.css")
+    .main
+        article.card.product-item
+                header.card__header
+                    h1.product__title #{product.title}
+                .card__image
+                    -var image = product.image
+                    -var title = product.title
+                    mixin image(name, title)
+                        figure
+                            img(src='/'+ image, alt=title)
+                            figcaption= title
+                    +image(image, title)
+
+                .card__content
+                    h2.product__price $#{product.price.toFixed(2)}
+                    p.product__description #{product.desc}
+            
+                .card__actions
+                    if isAuthenticated
+                        form(action="/add-to-cart/", method="POST")
+                            input(type="hidden", name="_csrf", value=csrfToken)
+                            input(type="hidden" name="prodId" value=product.id)
+                            button.btn(type="submit") Add to Cart

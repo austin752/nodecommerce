@@ -1,0 +1,39 @@
+extends ../layouts/base.pug
+
+block styles
+    link(rel="stylesheet", href="/css/cart.css")
+
+block content
+    .main
+        if products.length <= 0
+            h3 No poducts yet, keep shopping
+        else
+            each p in products
+                .row.cartItem
+                    .col-2                                
+                        -var image = p.productId.image
+                        -var title = p.productId.title
+                        mixin image(image, title)
+                            figure
+                                img.cartImage(src=image, alt= title)
+                        +image(image, title)
+                    .col-3
+                        h3.product__title #{p.productId.title}
+                    .col-2
+                        h2.product__price $#{p.productId.price}
+                    .col-2
+                        p.product__qty #{p.productId.desc}
+                    .col-1
+                        p.product__qty #{p.qty}
+                    .col-1
+                        p.product__total $#{p.total}
+                    .col-3
+                        form(action="/delete-item/", method="POST")
+                            input(type="hidden", name="_csrf", value=csrfToken)
+                            input(type="hidden", name="prodId", value=p.productId._id)
+                            button.btn(type="submit") Delete Product
+            .row
+                //- form(action="/create-order", method="POST")
+                //-     input(type="hidden", name="_csrf", value=csrfToken)
+                //-     button.btn(type="submit") Confirm Order  
+                a.btn.btn-success(href="/checkout") Order Now         

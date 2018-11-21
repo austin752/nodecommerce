@@ -1,0 +1,23 @@
+extends ../layouts/base.pug
+
+block content
+    block styles
+        link(rel="stylesheet", href="../css/orders.css")
+    main
+        if orders.length <= 0
+            h1 No orders yet, keep shopping!
+        else
+            each order in orders
+                ul.orders
+                    li.orders-item
+                        .order-head
+                            h3 Order: #{order._id} -- Order Total: $#{order.orderTotal.toFixed(2)}
+                            a(href="orders/" + order._id) Download Invoice
+                        ul.orders-products
+                            each p in order.products
+                                -var orderTotal = p.qty * p.product.price.toFixed(2)
+                                li.orders-products-item 
+                                    span.orders-product-title #{p.product.title}|- 
+                                    span $#{p.product.price.toFixed(2)} x #{p.qty} = $#{orderTotal.toFixed(2)}
+                            
+                                    

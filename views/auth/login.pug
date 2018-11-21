@@ -1,0 +1,23 @@
+extends ../layouts/base.pug
+
+block content
+    main
+        h3 Login
+        if errMsg
+            .user-message.user-message--error #{errMsg}
+    
+        if validationErrors.find(e => e.param === 'email')
+            -var emailErr = true
+        if validationErrors.find(e => e.param === 'password')
+            -var passErr = true
+        form.login-form(action="/login", method="POST" novalidate)
+            input(type="hidden", name="_csrf", value=csrfToken)
+            .form-control
+                input.my-3(class=emailErr ? 'invalid' : '',id="email", type="text", name="email", placeholder="email", required="true", values=oldInput.email)
+            .form-control
+                input.my-3(class=passErr ? 'invalid' : '',id="password", type="password", name="password", placeholder="Password", required="true", values=oldInput.email)
+            button.btn.btn-success(type="submit") Login
+        p.my-3
+            a(href="/register") Don't have an account?
+        p.my-3
+            a(href="/reset") Forgot Password?

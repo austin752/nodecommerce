@@ -1,0 +1,28 @@
+extends ../layouts/base.pug
+
+block styles
+    link(rel="stylesheet", href="/css/products")
+    link(rel="stylesheet", href="/css/forms")
+
+block content
+    main
+        if validationErrors.find(e => e.param === 'title')
+            -var titleErr = true
+        if validationErrors.find(e => e.param === 'image')
+            -var imageErr = true
+        if validationErrors.find(e => e.param === 'price')
+            -var priceErr = true
+        if validationErrors.find(e => e.param === 'desc')
+            -var descErr = true
+        form(action="/admin/add-product", method="POST", enctype="multipart/form-data")
+            input(type="hidden", name="_csrf", value=csrfToken)
+            .form-control
+                input(class=titleErr ? 'invalid' : '', type="text", name="title", id="title", placeholder="Title")
+            .form-control
+                label(for="image") Image Upload:
+                input(type="file", name="image", id="image" value="")
+            .form-control
+                input(class=priceErr ? 'invalid' : '', type="number", name="price", id="price", step="0.01", placeholder="Price")
+            .form-control
+                input(class=descErr ? 'invalid' : '', type="text", name="desc", id="desc",  cols="30", rows="10" placeholder="Description")
+            button.btn(type="submit") Add Product

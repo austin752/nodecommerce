@@ -1,0 +1,15 @@
+if ITEMS_PER_PAGE <= 9
+    if path == '/products'
+        -var link = '/products'
+    if path == 'admin/products'
+        -var link = '/admin/products'
+    section.pagination
+        if currentPage !==1 && prevPage !== 1
+            a(href=link + "/?page=1") 1
+        if hasPrevPage
+            a(href=link + "/?page=" + prevPage) #{prevPage}
+        a.active(href=link + "/?page=" + currentPage) #{currentPage}
+        if hasNextPage
+            a(href=link + "/?page=" + nextPage) #{nextPage}
+        if lastPage !== currentPage && nextPage !== lastPage
+            a(href=link + "/?page=" + lastPage) #{lastPage}

@@ -1,0 +1,18 @@
+extends ../layouts/base.pug
+
+block content
+    .container
+        .row
+            .col-3
+            .col-6
+                h3 Login
+                    if errorMsg
+                        .errorMsg 
+                            span #{errorMsg}
+                .login-form
+                    form(action="/reset", method="POST")
+                        input(type="hidden", name="_csrf", value=csrfToken)
+                        input.form-control.my-3(id="email", type="text", name="email", placeholder="email", required="true")
+                        button.btn.btn-success(type="submit") Reset Password
+            
+            .col-3
